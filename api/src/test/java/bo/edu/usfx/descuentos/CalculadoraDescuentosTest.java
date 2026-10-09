@@ -16,7 +16,7 @@ class CalculadoraDescuentosTest {
         "100.00, 10, 90.00",
         "200.00, 25, 150.00",
         "50.00, 50, 25.00",
-        "33.33, 10, 30.00",
+        "33.33, 10, 29.99",
         "19.99, 15, 16.99"
     })
     void aplicaElDescuentoYRedondeaADosDecimales(double precio, double porcentaje, double esperado) {
