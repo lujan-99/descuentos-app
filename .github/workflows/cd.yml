@@ -80,3 +80,39 @@ jobs:
         run: scripts/verificar-config.sh API_URL WEB_URL
       - name: Comprobar lo desplegado
         run: scripts/smoke.sh "$API_URL" "$WEB_URL" "$GITHUB_SHA"
+
+  rendimiento:
+    name: Rendimiento (JMeter)
+    needs: smoke-test
+    runs-on: ubuntu-latest
+    env:
+      API_URL: ${{ vars.API_URL }}
+      SLA_P95_MS: ${{ vars.SLA_P95_MS || '500' }} # SLA de la Practica 5: p95 < 500 ms
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Instalar JMeter 5.6.3
+        run: |
+          curl -fsSL https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.tgz | tar xz -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/apache-jmeter-5.6.3/bin" >> "$GITHUB_PATH"
+      - name: Despertar la API (el plan gratuito de Render duerme)
+        run: |
+          for i in $(seq 1 12); do
+            curl -fsS --max-time 20 "$API_URL/actuator/health" && exit 0
+            echo "intento $i: la API aun no responde"; sleep 10
+          done
+          exit 1
+      - name: Prueba de humo de rendimiento
+        run: jmeter -n -t perf/humo-api.jmx -Jhost="${API_URL#https://}" -Jusuarios=5 -Jiteraciones=20 -l perf/resultados.jtl
+      - name: Verificar el SLA
+        shell: bash # pipefail: si el SLA falla, el paso falla aunque tee termine bien
+        run: python3 scripts/verificar-sla.py perf/resultados.jtl "$SLA_P95_MS" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Guardar resultados
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jmeter-resultados
+          path: perf/resultados.jtl
