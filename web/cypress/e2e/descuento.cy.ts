@@ -13,11 +13,11 @@ describe('Calculadora de descuentos', () => {
     cy.get('[data-cy=resultado]').should('contain', 'Bs 150,00')
   })
 
-  it('redondea hacia abajo: 33,33 Bs con 10 % -> Bs 29,99', () => {
+  it('redondea la mitad hacia arriba: 33,33 Bs con 10 % -> Bs 30,00', () => {
     cy.get('[data-cy=precio]').clear().type('33.33')
     cy.get('[data-cy=porcentaje]').clear().type('10')
     cy.get('[data-cy=calcular]').click()
-    cy.get('[data-cy=resultado]').should('contain', 'Bs 29,99')
+    cy.get('[data-cy=resultado]').should('contain', 'Bs 30,00')
   })
 
   it('rechaza un descuento mayor que 100 sin llamar a la API', () => {
