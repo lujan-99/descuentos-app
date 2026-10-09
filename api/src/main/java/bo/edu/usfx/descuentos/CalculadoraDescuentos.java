@@ -21,6 +21,6 @@ public class CalculadoraDescuentos {
         }
         BigDecimal precio = BigDecimal.valueOf(precioOriginal);
         BigDecimal factor = BigDecimal.valueOf(100 - porcentajeDescuento).divide(BigDecimal.valueOf(100));
-        return precio.multiply(factor).setScale(2, RoundingMode.DOWN).doubleValue();
+        return precio.multiply(factor).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 }
