@@ -52,3 +52,8 @@ Ambientes (Settings → Environments): `preview`, `api-production`, `web-product
 | `CORS_ORIGINS` | Orígenes del front-end que pueden llamar a la API (admite `*`) | `https://TU-PROYECTO*.vercel.app` |
 | `PORT` | Lo define Render solo | — |
 | `RENDER_GIT_COMMIT` | Lo define Render solo; `/api/info` lo devuelve | — |
+
+## Despliegue
+
+- API (Render): https://descuentos-api-il43.onrender.com/api/info
+- Front-end (Vercel): https://descuentos-web-blush.vercel.app
