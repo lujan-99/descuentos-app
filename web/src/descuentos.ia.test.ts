@@ -9,7 +9,7 @@ describe('validar', () => {
   })
 
   it('rechaza un precio negativo con el mensaje correcto', () => {
-    expect(validar(-5, 10)).toBe('Original price must be greater than zero')
+    expect(validar(-5, 10)).toBe('El precio original debe ser mayor que cero')
   })
 
   it('rechaza el precio cero', () => {
