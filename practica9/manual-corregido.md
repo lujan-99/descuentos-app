@@ -15,8 +15,9 @@ la calculadora aparece lista para usar.
 
 ## 3. Cómo calcular un descuento
 
-1. Escriba el **Precio original (Bs)** en el primer campo. Debe ser mayor que cero; acepta decimales
-   (por ejemplo 33,33).
+1. Escriba el **Precio original (Bs)** en el primer campo. Debe ser mayor que cero. Los centavos se
+   escriben con **punto**: `33.33`. **No use coma**: si escribe `33,33` el campo la descarta sin avisar,
+   toma 3333 y el resultado sale mal.
 2. Escriba el **Descuento (%)** en el segundo campo. Puede ir de 0 a 100, ambos incluidos.
 3. Pulse el botón **Calcular**. Mientras se hace el cálculo el botón muestra **Calculando…** y no se
    puede volver a pulsar.

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manual de usuario — Calculadora de Descuentos</title>
+<style>
+  :root { --tinta: #1d2733; --suave: #5a6472; --azul: #2c5a88; --verde: #e8f5ec; --rosa: #fce8e8; --borde: #d8dde4; }
+  body { font-family: "Segoe UI", "DejaVu Sans", Arial, sans-serif; color: var(--tinta); background: #fff; max-width: 820px; margin: 0 auto; padding: 32px 20px; line-height: 1.55; font-size: 16px; }
+  h1 { color: var(--azul); margin-bottom: 4px; }
+  h2 { color: var(--azul); border-bottom: 2px solid var(--borde); padding-bottom: 4px; margin-top: 36px; }
+  .sub { color: var(--suave); margin-top: 0; }
+  figure { margin: 14px 0; }
+  figure img { max-width: 100%; width: 460px; border: 1px solid var(--borde); border-radius: 6px; }
+  figcaption { color: var(--suave); font-size: 14px; }
+  .aviso { background: #fff6dd; border-left: 5px solid #e0a800; padding: 10px 14px; border-radius: 4px; }
+  .ok { background: var(--verde); padding: 2px 6px; border-radius: 3px; }
+  .err { background: var(--rosa); padding: 2px 6px; border-radius: 3px; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid var(--borde); padding: 7px 9px; text-align: left; vertical-align: top; }
+  th { background: #f1f4f8; }
+  code, kbd { font-family: "DejaVu Sans Mono", monospace; background: #f1f4f8; padding: 1px 5px; border-radius: 3px; }
+  .rapida { border: 2px solid var(--azul); border-radius: 8px; padding: 6px 18px 14px; page-break-before: always; }
+  @media print { body { padding: 0; } h2 { page-break-after: avoid; } figure { page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<h1>Manual de usuario — Calculadora de Descuentos</h1>
+<p class="sub">Versión final, verificada contra la aplicación real el 16/10/2026 (Práctica 9, COM450). Borrador generado
+con Claude (Opus 5.5) y corregido a mano: ver la tabla de verificación del informe.</p>
+
+<h2>1. ¿Para qué sirve?</h2>
+<p>La <b>Calculadora de Descuentos</b> es una página web que le dice cuánto va a pagar por un producto después de
+aplicarle un descuento. Usted escribe el precio en bolivianos (Bs) y el porcentaje de descuento, y la página le
+muestra el <b>precio final</b>. Sirve a cualquier persona que venda o compre con descuento; no hace falta saber de
+computación ni crear una cuenta.</p>
+<p>La calculadora <b>no</b> tiene inicio de sesión, cuenta, historial, menú ni enlaces. El único botón es
+<b>Calcular</b>.</p>
+
+<h2>2. Cómo entrar</h2>
+<p>Abra en su navegador (Chrome, Edge o Firefox) la dirección
+<b>https://descuentos-web-blush.vercel.app</b>. Aparece esta pantalla:</p>
+<figure><img src="img/01-inicio.png" alt="Pantalla inicial con los campos Precio original (Bs) en 100 y Descuento (%) en 10"><figcaption>Pantalla inicial: los dos campos ya traen un ejemplo (100 y 10).</figcaption></figure>
+<p>Mire la línea pequeña del final (el pie de página). Si dice <code>API</code> seguido de un número de versión
+(por ejemplo <code>API 1.0.0 · commit 532d643</code>; los números cambian cuando se actualiza la aplicación), la
+calculadora está lista. Si dice <code>API sin conexión</code>, vaya a la sección 5.</p>
+
+<h2>3. Cómo calcular un descuento</h2>
+<ol>
+  <li>Haga clic en el campo <b>Precio original (Bs)</b>, borre el número que tiene y escriba el precio. Debe ser
+      mayor que cero.</li>
+  <li>Haga clic en el campo <b>Descuento (%)</b>, borre el número y escriba el porcentaje, de <b>0 a 100</b>
+      (los dos se permiten).</li>
+  <li>Pulse el botón <b>Calcular</b>. Mientras calcula, el botón dice <b>Calculando…</b>, se ve más claro y no se
+      puede volver a pulsar; espere un momento.</li>
+  <li>Lea el resultado en el recuadro verde que aparece debajo del botón.</li>
+</ol>
+<figure><img src="img/02-200-25.png" alt="200 Bs con 25 % da Precio final: Bs 150,00"><figcaption>Ejemplo: 200 Bs con 25 % de descuento → <span class="ok">Precio final: Bs 150,00</span>.</figcaption></figure>
+
+<div class="aviso"><b>Importante: los centavos se escriben con punto.</b> Escriba <code>33.33</code>, no
+<code>33,33</code>. Si usa coma, el campo la borra sin avisar: toma <code>3333</code> y el resultado sale mal
+(Bs 2999,70 en lugar de Bs 30,00). El resultado, en cambio, siempre se muestra con coma.</div>
+<figure><img src="img/coma-error.png" alt="Escribir 33,33 deja 3333 en el campo y da Bs 2999,70"><figcaption>Con coma: el campo queda en 3333 y el precio final es Bs 2999,70 (incorrecto).</figcaption></figure>
+<figure><img src="img/punto-ok.png" alt="Escribir 33.33 da Bs 30,00"><figcaption>Con punto: 33.33 con 10 % → Bs 30,00 (correcto).</figcaption></figure>
+
+<h3>Cómo leer el resultado</h3>
+<ul>
+  <li>Empieza con <b>Bs</b>, usa <b>coma</b> para los centavos y siempre muestra <b>dos decimales</b>:
+      <code>Bs 150,00</code>.</li>
+  <li>No separa los miles: mil ciento once bolivianos con cinco centavos se ve como <code>Bs 1111,05</code>.</li>
+  <li>Se redondea a dos decimales: si el tercer decimal es 5 o más, el segundo sube. 33.33 con 10 % da 29,997 y se
+      muestra <code>Bs 30,00</code>; 0.05 con 10 % da 0,045 y se muestra <code>Bs 0,05</code>.</li>
+  <li>No hay precio máximo: la calculadora acepta precios tan grandes como quiera escribir.</li>
+</ul>
+
+<h2>4. Si aparece un mensaje de error</h2>
+<p>Los errores salen en un recuadro rosado con borde rojo, debajo del botón <b>Calcular</b>.</p>
+<table>
+  <tr><th>Mensaje</th><th>Por qué aparece</th><th>Qué hacer</th></tr>
+  <tr><td><span class="err">El precio original debe ser mayor que cero</span></td><td>El precio es 0, es negativo (por ejemplo -5) o el campo está vacío.</td><td>Escriba un precio mayor que cero y pulse <b>Calcular</b>.</td></tr>
+  <tr><td><span class="err">El porcentaje de descuento debe estar entre 0 y 100</span></td><td>El descuento es negativo (-1) o mayor que 100 (150, 100.01).</td><td>Escriba un descuento entre 0 y 100 y pulse <b>Calcular</b>.</td></tr>
+  <tr><td><span class="err">Failed to fetch</span> (en inglés)</td><td>La calculadora no pudo comunicarse con el servidor que hace el cálculo. No es un error de sus números.</td><td>Vea la sección 5.</td></tr>
+</table>
+<figure><img src="img/08-precio-0.png" alt="Error: El precio original debe ser mayor que cero"><figcaption>Precio 0 → mensaje de precio.</figcaption></figure>
+<figure><img src="img/10-porc-150.png" alt="Error: El porcentaje de descuento debe estar entre 0 y 100"><figcaption>Descuento 150 % → mensaje de porcentaje.</figcaption></figure>
+
+<h2>5. Si dice «API sin conexión»</h2>
+<p>El servidor que hace los cálculos no responde en este momento. Si pulsa <b>Calcular</b> así, aparece el
+mensaje <span class="err">Failed to fetch</span>.</p>
+<figure><img src="img/16-sin-api-calcular.png" alt="Pie de página API sin conexión y error Failed to fetch"><figcaption>Sin conexión con el servidor: pie <code>API sin conexión</code> y mensaje <code>Failed to fetch</code>.</figcaption></figure>
+<p>Su internet funciona (si no, la página no se habría abierto): el problema está en el servidor. Espere uno o dos
+minutos y recargue la página (tecla <kbd>F5</kbd>). Cuando el pie vuelva a mostrar <code>API</code> con un número
+de versión, ya puede calcular.</p>
+
+<h2>6. Preguntas frecuentes</h2>
+<p><b>1. ¿Puedo poner 0 % o 100 %?</b><br>Sí. Con un precio de 100, el 0 % da Bs 100,00 y el 100 % da Bs 0,00.</p>
+<p><b>2. ¿Cómo escribo los centavos?</b><br>Con punto: <code>12.50</code>. Con coma el resultado sale mal y la
+página no avisa.</p>
+<p><b>3. ¿Por qué el resultado no tiene puntos en los miles?</b><br>La calculadora siempre muestra el número
+seguido, con coma y dos decimales: <code>Bs 1111,05</code>.</p>
+<p><b>4. ¿Se guardan mis cálculos? ¿Necesito una cuenta?</b><br>No. No hay historial ni cuentas. Si necesita
+conservar un resultado, anótelo.</p>
+<p><b>5. Me salió «Failed to fetch». ¿Hice algo mal?</b><br>No. El servidor no respondió. Espere un poco y recargue
+la página (sección 5).</p>
+
+<div class="rapida">
+<h2>Referencia rápida</h2>
+<ol>
+  <li>Escriba el precio en <b>Precio original (Bs)</b>: mayor que 0, centavos con <b>punto</b> (<code>33.33</code>).</li>
+  <li>Escriba el descuento en <b>Descuento (%)</b>: de 0 a 100.</li>
+  <li>Pulse <b>Calcular</b> (mientras tanto dice <b>Calculando…</b>).</li>
+  <li>Lea el recuadro verde: <span class="ok">Precio final: Bs 150,00</span>.</li>
+</ol>
+<table>
+  <tr><th>Lo que ve</th><th>Qué significa</th><th>Qué hacer</th></tr>
+  <tr><td>Recuadro verde <code>Precio final: Bs …</code></td><td>Cálculo correcto</td><td>Leer el resultado</td></tr>
+  <tr><td><span class="err">El precio original debe ser mayor que cero</span></td><td>Precio 0, negativo o vacío</td><td>Poner un precio mayor que 0</td></tr>
+  <tr><td><span class="err">El porcentaje de descuento debe estar entre 0 y 100</span></td><td>Descuento menor que 0 o mayor que 100</td><td>Poner un descuento de 0 a 100</td></tr>
+  <tr><td><span class="err">Failed to fetch</span> / pie <code>API sin conexión</code></td><td>El servidor no responde</td><td>Esperar y recargar (F5)</td></tr>
+</table>
+<p>Resultado: <b>Bs</b> delante, coma decimal, dos decimales, sin separador de miles, redondeo de la mitad hacia
+arriba. Dirección: <b>https://descuentos-web-blush.vercel.app</b></p>
+</div>
+
+</body>
+</html>
