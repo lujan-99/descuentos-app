@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Práctica 9 — IA en Calidad de Software</title>
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  :root { --azul: #1f4e79; --azul2: #2c5a88; --tinta: #1d2733; --suave: #5a6472; --verde: #1e7d46; --rojo: #b42828; --borde: #d5dbe3; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "DejaVu Sans", Arial, sans-serif; color: var(--tinta); }
+  section { width: 1280px; height: 720px; padding: 52px 64px; page-break-after: always; position: relative; overflow: hidden; background: #fff; }
+  section::after { content: attr(data-n); position: absolute; right: 30px; bottom: 20px; color: #9aa3ae; font-size: 15px; }
+  h1 { color: var(--azul); font-size: 46px; margin: 0 0 10px; }
+  h2 { color: var(--azul); font-size: 34px; margin: 0 0 22px; border-bottom: 3px solid var(--borde); padding-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.4; }
+  li { margin-bottom: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border: 1px solid var(--borde); padding: 7px 10px; text-align: left; vertical-align: top; }
+  th { background: #eaf0f6; }
+  .big { font-size: 64px; font-weight: bold; color: var(--azul); }
+  .rojo { color: var(--rojo); font-weight: bold; } .verde { color: var(--verde); font-weight: bold; }
+  .cols { display: flex; gap: 36px; align-items: flex-start; } .cols > * { flex: 1; }
+  img { max-width: 100%; max-height: 470px; border: 1px solid var(--borde); }
+  .portada { background: linear-gradient(135deg, #1f4e79, #2c5a88); color: #fff; display: flex; flex-direction: column; justify-content: center; }
+  .portada h1 { color: #fff; font-size: 52px; } .portada p { font-size: 26px; color: #e3ecf5; }
+  .nota { font-size: 17px; color: var(--suave); }
+  code { font-family: "DejaVu Sans Mono", monospace; background: #f1f4f8; padding: 0 5px; border-radius: 3px; font-size: 0.9em; }
+</style>
+</head>
+<body>
+
+<section class="portada" data-n="1">
+  <p>COM450 · Calidad de Software · USFX</p>
+  <h1>Práctica 9 — IA aplicada a la Calidad de Software</h1>
+  <p>Pruebas y manuales generados con IA, medidos con cobertura y mutación, y verificados contra la aplicación</p>
+  <p style="margin-top:40px">David Luján · trabajo individual · 16 de octubre de 2026</p>
+</section>
+
+<section data-n="2">
+  <h2>Contexto: escribir dejó de ser lo caro; verificar, no</h2>
+  <div class="cols">
+    <div>
+      <p><b>Qué hace bien la IA</b></p>
+      <ul><li>Propone casos y estructura en segundos</li><li>Redacta manuales, ayudas y FAQ</li><li>Sugiere zonas sin probar</li></ul>
+    </div>
+    <div>
+      <p><b>Riesgos que vimos en esta práctica</b></p>
+      <ul><li><b>Sesgo de confirmación:</b> la ronda 1 fijó un defecto del código</li>
+      <li><b>Alucinación:</b> funciones y mensajes inventados (reto)</li>
+      <li><b>Falsa seguridad:</b> 100 % de cobertura con 60,71 % de mutación</li>
+      <li><b>Fuga de datos:</b> modelos gratuitos que entrenan con los prompts</li></ul>
+    </div>
+  </div>
+</section>
+
+<section data-n="3">
+  <h2>Comparativa — herramientas de pruebas</h2>
+  <p class="nota">Mismo prompt mínimo sobre <code>descuentos.ts</code>, conversación nueva, medido con el mismo script (Vitest + tsc + Stryker).</p>
+  <table>
+    <tr><th>Herramienta</th><th>Pruebas</th><th>Verdes</th><th>tsc</th><th>Mutación</th><th>Observación</th></tr>
+    <tr><td>Claude (Opus 5.5)</td><td>26</td><td>26</td><td class="verde">limpio</td><td>100 %</td><td>Explica cada caso</td></tr>
+    <tr><td>OpenCode + Big Pickle</td><td>37</td><td>37</td><td class="verde">limpio</td><td>100 %</td><td>Instaló vitest y ejecutó comandos solo</td></tr>
+    <tr><td>OpenCode + MiMo</td><td>26</td><td>26</td><td class="rojo">6 errores</td><td>100 %</td><td>Usa <code>process</code>: rompe el build</td></tr>
+    <tr><td>OpenCode + DeepSeek</td><td>18</td><td class="rojo">17</td><td class="verde">limpio</td><td>no medible</td><td>Inventa un redondeo (1,005 → 1,01)</td></tr>
+  </table>
+  <p class="nota">Nemotron y Step: error 400 del proveedor. Copilot: investigado, no probado.</p>
+</section>
+
+<section data-n="4">
+  <h2>Matriz ponderada — pruebas</h2>
+  <table>
+    <tr><th>Criterio</th><th>Peso</th><th>Claude</th><th>Big Pickle</th><th>MiMo</th><th>DeepSeek</th></tr>
+    <tr><td>Compatibilidad TS / Vitest</td><td>25</td><td>5</td><td>5</td><td>3</td><td>4</td></tr>
+    <tr><td>Control del contexto</td><td>20</td><td>5</td><td>3</td><td>4</td><td>4</td></tr>
+    <tr><td>Costo y plan gratuito</td><td>15</td><td>3</td><td>5</td><td>5</td><td>5</td></tr>
+    <tr><td>Privacidad</td><td>15</td><td>3</td><td>1</td><td>2</td><td>2</td></tr>
+    <tr><td>Calidad en la muestra</td><td>25</td><td>5</td><td>5</td><td>3</td><td>2</td></tr>
+    <tr><th>Total</th><th>100</th><th>88</th><th>80</th><th>67</th><th>67</th></tr>
+  </table>
+</section>
+
+<section data-n="5">
+  <h2>Herramienta elegida A: Claude</h2>
+  <div class="cols">
+    <div><p><b>Cómo funciona:</b> LLM conversacional/agente; recibe código, reglas, archivos e imágenes; cada ronda en una conversación nueva.</p>
+    <p><b>Ventajas:</b> acepta reglas de negocio, compila a la primera, explica y señala huecos de la especificación.</p></div>
+    <div><p><b>Limitaciones:</b> si lee el código, reproduce sus defectos; plan de pago para Claude Code; hay que desactivar el entrenamiento.</p>
+    <p><b>Por qué:</b> empata en calidad con Big Pickle, pero gana en privacidad y control (no actúa solo). Declarado: también la comodidad.</p></div>
+  </div>
+</section>
+
+<section data-n="6">
+  <h2>Resultados: tres rondas sobre <code>cupones.ts</code></h2>
+  <table>
+    <tr><th>Ronda</th><th>Entrada</th><th>Pruebas</th><th>Cobertura</th><th>Mutación</th><th>¿Correctas?</th></tr>
+    <tr><td>1</td><td>Solo código</td><td>48</td><td>100 %</td><td>100 %</td><td class="rojo">Fijan el defecto UTC</td></tr>
+    <tr><td>2</td><td>+ reglas</td><td>38</td><td>100 %</td><td>100 % (UTC)</td><td>Encuentran el defecto, pero dependen de la zona horaria</td></tr>
+    <tr><td>3</td><td>+ evidencia</td><td>39</td><td>100 %</td><td>100 % UTC · 98,31 % La Paz</td><td class="verde">Deterministas, detectan el defecto</td></tr>
+  </table>
+  <p>El cupón vencía a las <b>20:00</b> del día de vencimiento en Bolivia (<code>toISOString</code> = UTC). <b>100 % de mutación no garantiza que el valor esperado sea correcto.</b></p>
+</section>
+
+<section data-n="7">
+  <h2>Comparativa — herramientas de manuales</h2>
+  <table>
+    <tr><th>Herramienta</th><th>Entrada</th><th>Salida</th><th>Plan gratuito</th><th>Probada</th></tr>
+    <tr><td>Claude</td><td>Inventario + capturas</td><td>Markdown → HTML/PDF</td><td>Sí, con límite</td><td>Sí</td></tr>
+    <tr><td>OpenCode DeepSeek / MiMo</td><td>Inventario + capturas</td><td>Markdown</td><td>Gratis (entrena con datos)</td><td>Sí</td></tr>
+    <tr><td>Scribe</td><td>Grabación de pasos</td><td>Guía web</td><td>Sin exportación PDF/HTML</td><td>No</td></tr>
+    <tr><td>Tango</td><td>Grabación de pasos</td><td>Guía web</td><td>~5 flujos</td><td>No</td></tr>
+    <tr><td>Guidde</td><td>Grabación + voz</td><td>Video</td><td>Marca de agua, sin descarga</td><td>No</td></tr>
+  </table>
+</section>
+
+<section data-n="8">
+  <h2>Matriz ponderada — manuales</h2>
+  <table>
+    <tr><th>Criterio</th><th>Peso</th><th>Claude</th><th>DeepSeek</th><th>MiMo</th><th>Scribe</th><th>Tango</th><th>Guidde</th></tr>
+    <tr><td>Formato de salida</td><td>20</td><td>5</td><td>5</td><td>5</td><td>2</td><td>2</td><td>1</td></tr>
+    <tr><td>Control del contexto</td><td>20</td><td>5</td><td>4</td><td>4</td><td>2</td><td>2</td><td>2</td></tr>
+    <tr><td>Costo / exportación</td><td>20</td><td>4</td><td>5</td><td>5</td><td>1</td><td>2</td><td>1</td></tr>
+    <tr><td>Privacidad</td><td>15</td><td>3</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+    <tr><td>Calidad en la muestra</td><td>25</td><td>4</td><td>3</td><td>4</td><td>n/p</td><td>n/p</td><td>n/p</td></tr>
+    <tr><th>Total</th><th>100</th><th>84</th><th>76</th><th>80</th><th>35/75</th><th>38/75</th><th>27/75</th></tr>
+  </table>
+</section>
+
+<section data-n="9">
+  <h2>Herramienta elegida B: Claude con inventario</h2>
+  <ul>
+    <li><b>Tipo de manual:</b> manual de usuario en Markdown → HTML/PDF con capturas reales, FAQ y referencia rápida</li>
+    <li><b>Ventajas:</b> usa los nombres exactos del inventario, marca "NO VERIFICADO" en vez de inventar, 0 alucinaciones</li>
+    <li><b>Limitaciones:</b> es tan veraz como su fuente: repitió el error de mi inventario (decimales con coma)</li>
+    <li><b>Las herramientas de captura</b> (Scribe, Tango, Guidde) no exportan en el plan gratuito: descartadas para un PDF</li>
+  </ul>
+</section>
+
+<section data-n="10">
+  <h2>El manual y la verificación</h2>
+  <div class="cols">
+    <div>
+      <p class="big">74,4 %</p>
+      <p>32 de 43 afirmaciones correctas en la versión IA 1. 0 alucinaciones, 4 datos incorrectos, 4 de formato, 3 omisiones.</p>
+      <p><b>Error más grave:</b> "admite decimales, por ejemplo 33,33" → el campo descarta la coma: <span class="rojo">Bs 2999,70</span> en vez de <span class="verde">Bs 30,00</span>, sin aviso.</p>
+    </div>
+    <div><img src="img/coma-error.png" alt="33,33 da Bs 2999,70"></div>
+  </div>
+</section>
+
+<section data-n="11">
+  <h2>El reto: la IA que miente</h2>
+  <div class="cols">
+    <div>
+      <p><b>Pruebas (B1–B6), un commit cada una</b></p>
+      <ul><li>Mensaje en inglés · función inexistente</li><li><code>toBeDefined()</code> que pasa con <code>null</code></li><li>Prueba sin <code>expect</code> · <code>it.skip</code> en el límite</li><li>Tautología: repite la fórmula</li></ul>
+      <p>100 % de líneas con <span class="rojo">60,71 %</span> → <span class="verde">82,14 %</span> de mutación</p>
+    </div>
+    <div>
+      <p><b>Manual (M1–M8)</b></p>
+      <ul><li>Alucinaciones: inicio de sesión, Historial</li><li>Datos: rango 0–90, botón "Aplicar descuento", redondeo hacia abajo, mensaje único, pie</li><li>Formato: <code>$150.00</code> en vez de <code>Bs 150,00</code></li></ul>
+    </div>
+  </div>
+</section>
+
+<section data-n="12">
+  <h2>Conclusiones y recomendación</h2>
+  <ul>
+    <li>La IA ahorra la escritura; más del 85 % del tiempo fue <b>verificar</b></li>
+    <li>Cobertura y mutación no dicen si el valor esperado es correcto: lo dice la regla de negocio</li>
+    <li>Un control mal configurado engaña: 46 <i>timeouts</i> inflaron el puntaje del CI hasta bajar la concurrencia</li>
+    <li>La verdad terreno también se verifica: mi inventario tenía el error de la coma</li>
+    <li><b>Política:</b> nada de secretos en prompts, lista de control + pipeline obligatorios, bitácora, umbral de mutación tipo trinquete (98)</li>
+    <li><b>Recomendación:</b> usen la IA para generar, nunca para juzgar; midan con mutación y verifiquen cada afirmación de alto riesgo</li>
+  </ul>
+</section>
+
+</body>
+</html>
