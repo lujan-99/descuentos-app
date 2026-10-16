@@ -13,7 +13,7 @@ describe('validar', () => {
   })
 
   it('rechaza el precio cero', () => {
-    expect(validar(0, 10)).toBeDefined()
+    expect(validar(0, 10)).toBe('El precio original debe ser mayor que cero')
   })
 
   it('rechaza un porcentaje mayor que 100', () => {
