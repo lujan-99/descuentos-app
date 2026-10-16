@@ -114,7 +114,38 @@ jobs:
             web/coverage
           if-no-files-found: warn
 
-  # 4. E2E: API y front-end reales dentro del runner, Cypress contra ambos.
+  # 4. Mutación (Práctica 9): Stryker sobre cupones.ts; falla si el puntaje baja de thresholds.break.
+  #    Solo en pull requests: cada mutante ejecuta toda la suite y el job tarda más que el resto.
+  mutacion:
+    name: Mutación (Stryker)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    env:
+      CYPRESS_INSTALL_BINARY: 0
+      HUSKY: 0
+      TZ: UTC # el puntaje no debe depender de la zona horaria del runner
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - name: Pruebas de mutación de cupones.ts
+        run: npx stryker run --mutate src/cupones.ts --concurrency 4
+      - name: Guardar el informe de mutación
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutacion-informe
+          path: web/reports/mutation
+          if-no-files-found: warn
+
+  # 5. E2E: API y front-end reales dentro del runner, Cypress contra ambos.
   e2e:
     name: E2E (Cypress)
     needs: [api, web]
