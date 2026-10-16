@@ -3,3 +3,5 @@ coverage
 package-lock.json
 cypress/screenshots
 cypress/videos
+.stryker-tmp
+reports
