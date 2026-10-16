@@ -51,7 +51,8 @@ calculadora está lista. Si dice <code>API sin conexión</code>, vaya a la secci
   <li>Haga clic en el campo <b>Precio original (Bs)</b>, borre el número que tiene y escriba el precio. Debe ser
       mayor que cero.</li>
   <li>Haga clic en el campo <b>Descuento (%)</b>, borre el número y escriba el porcentaje, de <b>0 a 100</b>
-      (los dos se permiten).</li>
+      (los dos se permiten). <b>No lo deje vacío:</b> si queda vacío, la calculadora usa 0 % sin avisar y le
+      muestra el mismo precio.</li>
   <li>Pulse el botón <b>Calcular</b>. Mientras calcula, el botón dice <b>Calculando…</b>, se ve más claro y no se
       puede volver a pulsar; espere un momento.</li>
   <li>Lea el resultado en el recuadro verde que aparece debajo del botón.</li>
@@ -60,7 +61,9 @@ calculadora está lista. Si dice <code>API sin conexión</code>, vaya a la secci
 
 <div class="aviso"><b>Importante: los centavos se escriben con punto.</b> Escriba <code>33.33</code>, no
 <code>33,33</code>. Si usa coma, el campo la borra sin avisar: toma <code>3333</code> y el resultado sale mal
-(Bs 2999,70 en lugar de Bs 30,00). El resultado, en cambio, siempre se muestra con coma.</div>
+(Bs 2999,70 en lugar de Bs 30,00). En el descuento pasa lo mismo: <code>12,5</code> se lee como 125 y aparece el
+mensaje de porcentaje fuera de rango; escriba <code>12.5</code>. El resultado, en cambio, siempre se muestra con
+coma.</div>
 <figure><img src="img/coma-error.png" alt="Escribir 33,33 deja 3333 en el campo y da Bs 2999,70"><figcaption>Con coma: el campo queda en 3333 y el precio final es Bs 2999,70 (incorrecto).</figcaption></figure>
 <figure><img src="img/punto-ok.png" alt="Escribir 33.33 da Bs 30,00"><figcaption>Con punto: 33.33 con 10 % → Bs 30,00 (correcto).</figcaption></figure>
 
@@ -97,6 +100,8 @@ de versión, ya puede calcular.</p>
 <p><b>1. ¿Puedo poner 0 % o 100 %?</b><br>Sí. Con un precio de 100, el 0 % da Bs 100,00 y el 100 % da Bs 0,00.</p>
 <p><b>2. ¿Cómo escribo los centavos?</b><br>Con punto: <code>12.50</code>. Con coma el resultado sale mal y la
 página no avisa.</p>
+<p><b>2b. Escribí 12,5 % y me dice que el descuento debe estar entre 0 y 100. ¿Por qué?</b><br>Porque la coma se
+borra y queda 125. Escriba <code>12.5</code>.</p>
 <p><b>3. ¿Por qué el resultado no tiene puntos en los miles?</b><br>La calculadora siempre muestra el número
 seguido, con coma y dos decimales: <code>Bs 1111,05</code>.</p>
 <p><b>4. ¿Se guardan mis cálculos? ¿Necesito una cuenta?</b><br>No. No hay historial ni cuentas. Si necesita
@@ -108,7 +113,7 @@ la página (sección 5).</p>
 <h2>Referencia rápida</h2>
 <ol>
   <li>Escriba el precio en <b>Precio original (Bs)</b>: mayor que 0, centavos con <b>punto</b> (<code>33.33</code>).</li>
-  <li>Escriba el descuento en <b>Descuento (%)</b>: de 0 a 100.</li>
+  <li>Escriba el descuento en <b>Descuento (%)</b>: de 0 a 100, sin dejarlo vacío (vacío = 0 %).</li>
   <li>Pulse <b>Calcular</b> (mientras tanto dice <b>Calculando…</b>).</li>
   <li>Lea el recuadro verde: <span class="ok">Precio final: Bs 150,00</span>.</li>
 </ol>

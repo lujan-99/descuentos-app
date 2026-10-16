@@ -136,7 +136,7 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - run: npm ci
       - name: Pruebas de mutación de cupones.ts
-        run: npx stryker run --mutate src/cupones.ts --concurrency 4
+        run: npx stryker run --mutate src/cupones.ts --concurrency 2 --timeoutMS 20000
       - name: Guardar el informe de mutación
         if: always()
         uses: actions/upload-artifact@v4
