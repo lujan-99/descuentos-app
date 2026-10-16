@@ -58,6 +58,19 @@ describe('Regla 2: código del cupón', () => {
     expect(codigoValido(c)).toBe(true)
   })
 
+  it.each([
+    ['USF10', '3 letras'],
+    ['USFXY10', '5 letras'],
+    ['USFX1', '1 dígito'],
+    ['USFX100', '3 dígitos'],
+    ['US FX10', 'espacio interno'],
+    ['10USFX', 'orden invertido'],
+    ['USFX1A', 'letra en vez de dígito'],
+    ['', 'vacío'],
+  ])('rechaza "%s" (%s)', (c) => {
+    expect(codigoValido(c)).toBe(false)
+  })
+
   it('aplicarCupon acepta un código en minúsculas con espacios: 10 % de 100 = 10', () => {
     expect(aplicarCupon(100, cupon({ codigo: ' usfx10 ' }), HOY)).toEqual({
       ok: true,
