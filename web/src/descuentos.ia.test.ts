@@ -17,7 +17,7 @@ describe('validar', () => {
   })
 
   it('rechaza un porcentaje mayor que 100', () => {
-    validar(100, 150)
+    expect(validar(100, 150)).toBe('El porcentaje de descuento debe estar entre 0 y 100')
   })
 
   it.skip('rechaza el porcentaje 100.01', () => {
