@@ -20,7 +20,7 @@ describe('validar', () => {
     expect(validar(100, 150)).toBe('El porcentaje de descuento debe estar entre 0 y 100')
   })
 
-  it.skip('rechaza el porcentaje 100.01', () => {
+  it('rechaza el porcentaje 100.01', () => {
     expect(validar(100, 100.01)).toBe('El porcentaje de descuento debe estar entre 0 y 100')
   })
 })
