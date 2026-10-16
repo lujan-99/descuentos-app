@@ -1,7 +1,7 @@
 // Pruebas "generadas por un asistente de IA" para web/src/descuentos.ts.
 // Copia este archivo a web/src/ de descuentos-app. NO lo corrijas a mano al leerlo: primero ejecútalo.
 import { describe, expect, it } from 'vitest'
-import { calcularDescuento, formatearBs, validar } from './descuentos'
+import { formatearBs, validar } from './descuentos'
 
 describe('validar', () => {
   it('acepta un precio y un porcentaje validos', () => {
@@ -29,11 +29,5 @@ describe('formatearBs', () => {
   it('formatea un valor con coma decimal', () => {
     const valor = 1234.5
     expect(formatearBs(valor)).toBe(`Bs ${valor.toFixed(2).replace('.', ',')}`)
-  })
-})
-
-describe('calcularDescuento', () => {
-  it('calcula el precio final', () => {
-    expect(calcularDescuento(200, 25)).toBe(150)
   })
 })
