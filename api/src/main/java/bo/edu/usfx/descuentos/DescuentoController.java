@@ -10,14 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class DescuentoController {
 
     private final CalculadoraDescuentos calculadora;
+    private final Estadisticas estadisticas;
 
-    public DescuentoController(CalculadoraDescuentos calculadora) {
+    public DescuentoController(CalculadoraDescuentos calculadora, Estadisticas estadisticas) {
         this.calculadora = calculadora;
+        this.estadisticas = estadisticas;
     }
 
     @PostMapping("/descuento")
     public RespuestaDescuento calcular(@RequestBody SolicitudDescuento solicitud) {
         double precioFinal = calculadora.calcularPrecioFinal(solicitud.precio(), solicitud.porcentaje());
+        estadisticas.registrarCalculo();
         return new RespuestaDescuento(solicitud.precio(), solicitud.porcentaje(), precioFinal);
     }
 }
