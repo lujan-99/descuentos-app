@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.6</version>
+        <version>3.5.16</version>
         <relativePath/>
     </parent>
 
@@ -23,6 +23,10 @@
         <jacoco.version>0.8.12</jacoco.version>
         <!-- Cobertura minima de lineas: si baja de este valor, "mvn verify" falla -->
         <cobertura.minima>0.80</cobertura.minima>
+        <!-- Practica 10 (Trivy): versiones corregidas que Spring Boot 3.5.16 todavia no trae.
+             Quitar estas dos lineas cuando el parent las incluya (Dependabot avisa). -->
+        <tomcat.version>10.1.61</tomcat.version>
+        <jackson-bom.version>2.21.7</jackson-bom.version>
     </properties>
 
     <dependencies>
