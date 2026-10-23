@@ -89,4 +89,21 @@ class SeguridadApiTest {
                         .header("Access-Control-Request-Headers", "X-Cabecera-Inventada"))
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    void rechazaUnPrecioEnormePorHttp() throws Exception {
+        mvc.perform(post("/api/descuento").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"precio\":1e300,\"porcentaje\":10}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("El precio original no puede superar 1000000000")));
+    }
+
+    @Test
+    void unPrecioQueDesbordaAInfinityNoRevelaElMensajeInterno() throws Exception {
+        // 1e400 no cabe en un double: Jackson lo convierte en Infinity y BigDecimal lanzaba su propio mensaje
+        mvc.perform(post("/api/descuento").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"precio\":1e400,\"porcentaje\":10}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("Los valores deben ser numeros finitos")));
+    }
 }
