@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -72,5 +73,20 @@ class SeguridadApiTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(not(containsString("diskSpace"))));
         mvc.perform(get("/actuator/env")).andExpect(status().isNotFound());
+    }
+
+    @Test
+    void elPreflightNoPermiteCredencialesNiCabecerasArbitrarias() throws Exception {
+        mvc.perform(options("/api/descuento")
+                        .header("Origin", "http://localhost:4173")
+                        .header("Access-Control-Request-Method", "POST")
+                        .header("Access-Control-Request-Headers", "Content-Type"))
+                .andExpect(status().isOk())
+                .andExpect(header().doesNotExist("Access-Control-Allow-Credentials"));
+        mvc.perform(options("/api/descuento")
+                        .header("Origin", "http://localhost:4173")
+                        .header("Access-Control-Request-Method", "POST")
+                        .header("Access-Control-Request-Headers", "X-Cabecera-Inventada"))
+                .andExpect(status().isForbidden());
     }
 }
