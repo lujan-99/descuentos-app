@@ -28,6 +28,8 @@ public class CabecerasSeguridadFilter extends OncePerRequestFilter {
         response.setHeader("Cache-Control", "no-store");
         response.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
         response.setHeader("Permissions-Policy", "geolocation=(), camera=(), microphone=()");
+        // Otra pagina no puede incrustar las respuestas (no-cors); el fetch CORS del front-end no se ve afectado
+        response.setHeader("Cross-Origin-Resource-Policy", "same-origin");
         chain.doFilter(request, response);
     }
 }

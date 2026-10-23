@@ -34,7 +34,8 @@ class SeguridadApiTest {
                 .andExpect(header().string("Content-Security-Policy", containsString("default-src 'none'")))
                 .andExpect(header().string("Referrer-Policy", "no-referrer"))
                 .andExpect(header().string("Cache-Control", "no-store"))
-                .andExpect(header().string("Strict-Transport-Security", containsString("max-age=")));
+                .andExpect(header().string("Strict-Transport-Security", containsString("max-age=")))
+                .andExpect(header().string("Cross-Origin-Resource-Policy", "same-origin"));
     }
 
     @Test
