@@ -3,3 +3,19 @@ node_modules/
 .idea/
 .vscode/
 *.log
+
+# Practica 10: informes de ZAP (se generan en CI, no se versionan) y contrato local
+seguridad/zap-*.html
+seguridad/zap-*.json
+seguridad/web-baseline*
+seguridad/zap.yaml
+seguridad/openapi-local.yaml
+# Restos locales de Stryker (Practica 9)
+web/.stryker-tmp/
+web/reports/
+
+# Practica 10: ningun archivo de entorno con secretos. web/.env solo trae valores publicos de desarrollo
+# (VITE_API_URL y VITE_COMMIT: todo lo que empieza con VITE_ se publica en el JavaScript).
+.env*
+!web/.env
+seguridad/trivy-*.json

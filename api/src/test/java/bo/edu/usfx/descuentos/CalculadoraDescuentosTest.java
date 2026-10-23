@@ -46,4 +46,31 @@ class CalculadoraDescuentosTest {
                 assertThrows(IllegalArgumentException.class, () -> calculadora.calcularPrecioFinal(precio, 10));
         assertEquals("El precio original debe ser mayor que cero", e.getMessage());
     }
+
+    // Practica 10: entrada acotada (fronteras del precio maximo y numeros no finitos)
+
+    @Test
+    void aceptaElPrecioMaximoExacto() {
+        assertEquals(900_000_000.0, calculadora.calcularPrecioFinal(1_000_000_000d, 10), 0.0001);
+    }
+
+    @ParameterizedTest(name = "precio {0} supera el maximo")
+    @CsvSource({"1000000000.01", "1000000001", "1e300"})
+    void rechazaPreciosMayoresQueElMaximo(double precio) {
+        IllegalArgumentException e =
+                assertThrows(IllegalArgumentException.class, () -> calculadora.calcularPrecioFinal(precio, 10));
+        assertEquals("El precio original no puede superar 1000000000", e.getMessage());
+    }
+
+    @Test
+    void rechazaValoresNoFinitos() {
+        double[][] casos = {
+            {Double.POSITIVE_INFINITY, 10}, {Double.NEGATIVE_INFINITY, 10}, {Double.NaN, 10}, {100, Double.NaN}
+        };
+        for (double[] c : casos) {
+            IllegalArgumentException e =
+                    assertThrows(IllegalArgumentException.class, () -> calculadora.calcularPrecioFinal(c[0], c[1]));
+            assertEquals("Los valores deben ser numeros finitos", e.getMessage());
+        }
+    }
 }

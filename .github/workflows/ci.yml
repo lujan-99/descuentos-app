@@ -133,7 +133,8 @@ jobs:
           path: api-dist
       - name: Arrancar la API en segundo plano
         run: nohup java -jar api-dist/api.jar > api.log 2>&1 &
-      - uses: cypress-io/github-action@v6
+      # v6 (node20) dejo de funcionar con el Node 24 forzado del runner: "Socket closed before the connection was established"
+      - uses: cypress-io/github-action@v7
         with:
           working-directory: web
           build: npm run build

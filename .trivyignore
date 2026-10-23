@@ -1,0 +1,12 @@
+# Una linea por CVE aceptado (CVE-AAAA-NNNN), con la justificacion en el comentario de arriba y una fecha de revision.
+# "exp:" hace que Trivy vuelva a reportar el CVE desde esa fecha: la aceptacion vence sola.
+
+# CVE-2026-47884 (CRITICAL) spring-webmvc 6.2.19: RCE/SSRF con XsltView y un mapeo "/**" que renderiza vistas.
+#   Corregido solo en Spring Framework 7.0.9 (Spring Boot 4). La API no usa XsltView, ni vistas, ni ViewResolver:
+#   solo @RestController que devuelven JSON (grep -rniE "xslt|ModelAndView|ViewResolver" api/src: sin resultados).
+#   Riesgo aceptado: P=1 (no hay camino de ataque), I=3. Responsable: David Lujan. Revision: migrar a Spring Boot 4.
+CVE-2026-47884 exp:2026-12-15
+# CVE-2026-47890 (CRITICAL) spring-webmvc 6.2.19: corrupcion del flujo en Server-Sent Events con fragmentos de vista.
+#   Corregido solo en 7.0.9. La API no usa SseEmitter ni text/event-stream (grep: sin resultados).
+#   Riesgo aceptado: P=1, I=2. Responsable: David Lujan. Revision: migrar a Spring Boot 4.
+CVE-2026-47890 exp:2026-12-15
