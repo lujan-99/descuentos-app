@@ -7,7 +7,8 @@ node_modules/
 # Practica 10: informes de ZAP (se generan en CI, no se versionan) y contrato local
 seguridad/zap-*.html
 seguridad/zap-*.json
-seguridad/web-baseline.*
+seguridad/web-baseline*
+seguridad/zap.yaml
 seguridad/openapi-local.yaml
 # Restos locales de Stryker (Practica 9)
 web/.stryker-tmp/
