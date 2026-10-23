@@ -18,3 +18,4 @@ web/reports/
 # (VITE_API_URL y VITE_COMMIT: todo lo que empieza con VITE_ se publica en el JavaScript).
 .env*
 !web/.env
+seguridad/trivy-*.json
