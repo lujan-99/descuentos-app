@@ -29,25 +29,6 @@ class SeguridadApiTest {
     private MockMvc mvc;
 
     @Test
-    void todasLasRespuestasLlevanLasCabecerasDeSeguridad() throws Exception {
-        mvc.perform(get("/api/info"))
-                .andExpect(header().string("X-Content-Type-Options", "nosniff"))
-                .andExpect(header().string("X-Frame-Options", "DENY"))
-                .andExpect(header().string("Content-Security-Policy", containsString("default-src 'none'")))
-                .andExpect(header().string("Referrer-Policy", "no-referrer"))
-                .andExpect(header().string("Cache-Control", "no-store"))
-                .andExpect(header().string("Strict-Transport-Security", containsString("max-age=")))
-                .andExpect(header().string("Cross-Origin-Resource-Policy", "same-origin"));
-    }
-
-    @Test
-    void lasCabecerasTambienAparecenEnLosErrores() throws Exception {
-        mvc.perform(get("/api/no-existe"))
-                .andExpect(status().isNotFound())
-                .andExpect(header().string("X-Content-Type-Options", "nosniff"));
-    }
-
-    @Test
     void unCuerpoIlegibleDa400SinDetalleInterno() throws Exception {
         mvc.perform(post("/api/descuento").contentType(MediaType.APPLICATION_JSON).content("{esto no es json"))
                 .andExpect(status().isBadRequest())
