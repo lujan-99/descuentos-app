@@ -35,7 +35,7 @@ jobs:
       - uses: actions/checkout@v4
       # Trivy resuelve los POM padre de Spring Boot: sin la cache local los pide a Maven Central, que responde
       # 429 Too Many Requests a las IP compartidas (paso en la medicion local). Se resuelven antes con cache.
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: 17
@@ -76,7 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: 17
