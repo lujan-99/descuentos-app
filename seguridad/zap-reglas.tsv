@@ -10,3 +10,13 @@
 90022	FAIL	(Application Error Disclosure)
 40012	FAIL	(Cross Site Scripting Reflected)
 40018	FAIL	(SQL Injection)
+# --- Ejercicio 3: triaje de las alertas restantes (responsable: David Lujan, revision: 2026-12-15) ---
+# 90004: corregida en la Parte A (Cross-Origin-Resource-Policy); pasa a FAIL para que no vuelva sin que nadie lo note.
+90004	FAIL	(Cross-Origin-Resource-Policy Header Missing or Invalid)
+# 100001: ACEPTADA (H4). Las 2 instancias son la pagina de error HTML de Tomcat ante una linea de peticion invalida,
+# antes de llegar a Spring; no revela version ni datos. Sigue en WARN: se ve en cada informe hasta corregirla.
+100001	WARN	(Unexpected Content-Type was returned)
+# 100000 y 10104: FALSO POSITIVO (informativas). 4xx a los ataques es el comportamiento correcto y la API no cambia
+# segun el User-Agent. Quedan en INFO (visibles en el informe, no se ignoran).
+100000	INFO	(A Client Error response code was returned by the server)
+10104	INFO	(User Agent Fuzzer)
