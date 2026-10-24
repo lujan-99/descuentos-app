@@ -17,7 +17,7 @@ jobs:
     name: Secretos
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Filtro rapido de secretos en los archivos
@@ -32,7 +32,7 @@ jobs:
     name: Dependencias
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # Trivy resuelve los POM padre de Spring Boot: sin la cache local los pide a Maven Central, que responde
       # 429 Too Many Requests a las IP compartidas (paso en la medicion local). Se resuelven antes con cache.
       - uses: actions/setup-java@v4
@@ -75,7 +75,7 @@ jobs:
     name: DAST (API en ejecucion)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
