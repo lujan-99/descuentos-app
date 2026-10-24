@@ -116,7 +116,7 @@ jobs:
         run: python3 scripts/verificar-sla.py perf/resultados.jtl "$SLA_P95_MS" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Guardar resultados
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: jmeter-resultados
           path: perf/resultados.jtl
