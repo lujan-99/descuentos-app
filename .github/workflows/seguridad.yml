@@ -88,6 +88,10 @@ jobs:
           ADMIN_TOKEN="$(openssl rand -hex 24)"
           export ADMIN_TOKEN
           echo "::add-mask::$ADMIN_TOKEN"
+          # ZAP envia cientos de solicitudes por minuto desde 127.0.0.1: con el limite de 60 (Ejercicio 1) casi todo
+          # el escaneo recibiria 429 y no probaria nada. Solo en este runner efimero se sube el limite; el limite
+          # real lo vigila LimiteTasaTest.
+          export LIMITE_TASA_POR_MINUTO=100000
           CORS_ORIGINS="http://localhost:4173" nohup java -jar api/target/api.jar > api.log 2>&1 &
           for _ in $(seq 1 60); do
             curl -fsS http://localhost:8080/actuator/health > /dev/null 2>&1 && exit 0
