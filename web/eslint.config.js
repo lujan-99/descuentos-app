@@ -4,7 +4,16 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
-  { ignores: ['dist', 'coverage', 'cypress/screenshots', 'cypress/videos'] },
+  {
+    ignores: [
+      'dist',
+      'coverage',
+      'reports',
+      '.stryker-tmp',
+      'cypress/screenshots',
+      'cypress/videos',
+    ],
+  },
   {
     files: ['**/*.{ts,tsx}'],
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
